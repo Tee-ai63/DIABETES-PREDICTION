@@ -1,4 +1,5 @@
 🏥 Diabetes Readmission Risk Prediction
+
 📌 Project Overview
 
 Hospital readmissions within 30 days are costly and often preventable.
@@ -169,6 +170,7 @@ Incorporate temporal modeling for patient history
 📌 Key Takeaway
 
 This project demonstrates an end-to-end applied machine learning workflow in healthcare — from data cleaning and modeling to evaluation, interpretation, and deployment — with a strong emphasis on clinical relevance and responsible ML practices.
+
 
 
 
