@@ -1,39 +1,72 @@
-# **🩺 Multi-Modal Diabetes Risk Prediction Using Machine Learning**
-## **Project Overview**
-- Diabetes is a chronic disease with severe long-term health and economic consequences if not detected early. This project develops a multi-modal machine learning system that predicts an individual’s risk of developing diabetes by combining tabular clinical data and longitudinal (time-series) patient data.
+🏥 Diabetes Readmission Risk Prediction
+📌 Project Overview
 
-The system integrates traditional machine learning models with deep learning approaches to capture both static risk factors (e.g., age, BMI, glucose levels) and temporal health trends (e.g., rising blood glucose over time). Model predictions are made interpretable using explainable AI techniques to support clinical decision-making.
+Hospital readmissions within 30 days are costly and often preventable.
+This project builds a machine learning–based decision-support system to predict whether a patient with diabetes is at high risk of readmission within 30 days, using demographic, admission, utilization, and treatment-related data.
 
-## **Objectives**
-- Predict diabetes risk using patient clinical data
-- Compare traditional ML models with advanced deep learning models
-- Model disease progression using time-series data
-- Handle missing and noisy medical data realistically
-- Provide explainable predictions suitable for healthcare use
+The goal is to prioritize recall to minimize missed high-risk patients, reflecting real-world clinical considerations.
 
-## **Methodology**
-1. Data Sources
-The project uses a combination of public medical datasets and synthetic patient history data to address privacy constraints and class imbalance.
+🎯 Objective
 
-2. Data Modalities
-- Tabular Data
-- Age, sex, BMI
-- Blood glucose levels
-- Blood pressure
-- Insulin levels
+Predict 30-day hospital readmission risk for diabetic patients
 
-Time-Series Data
-- Sequential blood glucose measurements
-- Longitudinal vitals over multiple visits
+Optimize for recall to reduce false negatives
 
-3. Data Preprocessing
-- Missing value imputation (mean, median, forward-fill)
-- Outlier handling and normalization
-- Synthetic time-series generation for patient histories
-- Train–test split with stratification
+Provide an interpretable and deployable ML solution
 
-4. Models Implemented
-Baseline Models
+📊 Dataset
+
+Source: UCI Machine Learning Repository
+Diabetes 130-US hospitals for years 1999–2008
+
+Size: ~100,000 patient encounters
+
+Data Type: Tabular healthcare data (de-identified)
+
+The dataset includes patient demographics, hospital admission details, lab procedures, medication usage, and prior healthcare utilization.
+
+🧾 Feature Summary
+
+Key feature groups used:
+
+Demographics: age group, gender, race
+
+Hospital stay: admission type, source, discharge disposition, time in hospital
+
+Utilization history: prior inpatient, outpatient, and emergency visits
+
+Treatment indicators: medication changes, diabetes medication usage
+
+Engineered features:
+
+total_visits
+
+high_utilizer
+
+medication_count
+
+binary readmission target (readmitted_binary)
+
+High-cardinality diagnosis codes (e.g., ICD-9) were intentionally excluded to preserve interpretability and reduce sparsity.
+
+🧹 Data Preparation
+
+Missing values handled via imputation
+
+Categorical variables encoded using one-hot encoding
+
+Numerical variables scaled
+
+All preprocessing handled inside a scikit-learn Pipeline to prevent data leakage
+
+🧠 Modeling Approach
+Baseline Model
+
+Logistic Regression
+
+Used to establish a performance baseline
+
+Model Comparison
 
 Logistic Regression
 
@@ -41,58 +74,102 @@ Random Forest
 
 XGBoost
 
-Advanced Models
+Models were evaluated using cross-validation, focusing on:
 
-Long Short-Term Memory (LSTM) network
-
-Temporal Convolutional Neural Network (Temporal CNN)
-
-Ensemble Strategy
-
-Predictions from tabular and time-series models are combined to produce a unified diabetes risk score.
-
-5. Model Evaluation
-
-Accuracy
-
-Precision, Recall, F1-score
+Recall
 
 ROC-AUC
 
-Confusion Matrix
+Final Model
 
-6. Model Explainability
+XGBoost Classifier
 
-SHAP (SHapley Additive exPlanations)
+Chosen due to:
 
-Feature importance visualization
+Highest recall
 
-Patient-level explanation of risk factors
+Best ROC-AUC
 
-📊 Dashboard (Optional Extension)
+Strong performance on imbalanced data
 
-A Streamlit dashboard displays:
+⚙️ Optimization & Evaluation
 
-Individual diabetes risk score
+Stratified cross-validation
 
-Key contributing features
+Hyperparameter tuning with GridSearchCV
 
-Risk progression over time
+Class imbalance handled via scale_pos_weight
 
-🛠️ Tech Stack
+Decision threshold calibrated to improve recall
 
-Python
+Evaluation metrics:
 
-Pandas, NumPy
+Confusion matrix
 
-Scikit-learn
+ROC-AUC
 
-XGBoost
+Precision–Recall curve
 
-TensorFlow / PyTorch
+🔍 Interpretability & Error Analysis
 
-SHAP
+Feature importance analysis to understand key drivers of readmission
 
-Matplotlib, Seaborn
+Error analysis focused on false negatives
 
-Streamlit
+Threshold calibration used to minimize missed high-risk patients
+
+💼 Business & Clinical Perspective
+
+False negatives are more costly than false positives in healthcare
+
+Model prioritizes early identification of at-risk patients
+
+Can support:
+
+Care coordination
+
+Discharge planning
+
+Resource allocation
+
+This model is intended as a decision-support tool, not a replacement for clinical judgment.
+
+🌐 Deployment
+
+Deployed using Streamlit
+
+End-to-end pipeline (preprocessing + model) loaded via joblib
+
+Handles missing inputs using conservative defaults
+
+Outputs:
+
+Readmission risk probability
+
+Risk classification (High / Low)
+
+⚠️ Limitations
+
+Diagnosis codes not directly modeled
+
+Retrospective observational data
+
+Not validated on external hospital systems
+
+🔮 Future Work
+
+Group ICD diagnosis codes into clinical categories
+
+Add SHAP-based explanations
+
+Convert to API-based deployment (FastAPI)
+
+Incorporate temporal modeling for patient history
+
+📌 Key Takeaway
+
+This project demonstrates an end-to-end applied machine learning workflow in healthcare — from data cleaning and modeling to evaluation, interpretation, and deployment — with a strong emphasis on clinical relevance and responsible ML practices.
+
+
+
+
